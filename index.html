@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Qibla Finder Locator App</title>
+  <style>
+    :root {
+      --bg-top:    #0f1420;
+      --bg-mid:    #0a2330;
+      --bg-bottom: #081a15;
+      --gold:      #d9b358;
+      --gold-light:#f2d280;
+      --emerald:   #1abf72;
+      --teal:      #148c8c;
+      --card-bg:   rgba(255,255,255,0.05);
+      --card-border: rgba(255,255,255,0.10);
+      --text:      rgba(255,255,255,0.88);
+      --text-dim:  rgba(255,255,255,0.45);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      background: linear-gradient(160deg, var(--bg-top) 0%, var(--bg-mid) 50%, var(--bg-bottom) 100%);
+      min-height: 100vh;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      text-align: center;
+      padding: 80px 24px 60px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 50% 40%, rgba(26,191,114,0.08), transparent);
+      pointer-events: none;
+    }
+
+    .bismillah {
+      font-size: 1.05rem;
+      color: rgba(217,179,88,0.55);
+      letter-spacing: 0.04em;
+      margin-bottom: 20px;
+    }
+
+    .app-icon {
+      font-size: 5rem;
+      display: block;
+      margin: 0 auto 18px;
+      filter: drop-shadow(0 0 24px rgba(217,179,88,0.4));
+    }
+
+    .hero h1 {
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, var(--gold), var(--gold-light), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 14px;
+    }
+
+    .hero-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin: 18px auto 24px;
+      max-width: 300px;
+    }
+
+    .hero-divider span {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(217,179,88,0.45));
+    }
+
+    .hero-divider span:last-child {
+      background: linear-gradient(to left, transparent, rgba(217,179,88,0.45));
+    }
+
+    .hero-divider .ornament {
+      color: rgba(217,179,88,0.65);
+      font-size: 1.1rem;
+      flex: none;
+    }
+
+    .hero-subtitle {
+      font-size: 1.05rem;
+      color: var(--text-dim);
+      max-width: 560px;
+      margin: 0 auto 32px;
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .badge {
+      padding: 6px 16px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      border: 1px solid;
+    }
+
+    .badge-gold  { color: var(--gold);    border-color: rgba(217,179,88,0.35);  background: rgba(217,179,88,0.08); }
+    .badge-green { color: var(--emerald); border-color: rgba(26,191,114,0.35); background: rgba(26,191,114,0.08); }
+
+    /* ── Sections ── */
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-label::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--card-border);
+    }
+
+    /* ── Feature cards ── */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 16px;
+      margin-bottom: 56px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      padding: 24px;
+      transition: border-color 0.2s;
+    }
+
+    .card:hover { border-color: rgba(217,179,88,0.28); }
+
+    .card-icon {
+      font-size: 1.8rem;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .card h3 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--gold-light);
+      margin-bottom: 8px;
+      letter-spacing: 0.03em;
+    }
+
+    .card p {
+      font-size: 0.87rem;
+      color: var(--text-dim);
+    }
+
+    /* ── How it works ── */
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-bottom: 56px;
+      position: relative;
+    }
+
+    .steps::before {
+      content: "";
+      position: absolute;
+      left: 19px;
+      top: 28px;
+      bottom: 28px;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--emerald), rgba(26,191,114,0.1));
+    }
+
+    .step {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      padding: 18px 0;
+    }
+
+    .step-num {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--emerald), var(--teal));
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 0 16px rgba(26,191,114,0.35);
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-body h4 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .step-body p {
+      font-size: 0.85rem;
+      color: var(--text-dim);
+    }
+
+    /* ── Info table ── */
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 56px;
+      font-size: 0.88rem;
+    }
+
+    .info-table tr {
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .info-table tr:last-child { border-bottom: none; }
+
+    .info-table td {
+      padding: 14px 8px;
+    }
+
+    .info-table td:first-child {
+      color: var(--text-dim);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 600;
+      white-space: nowrap;
+      padding-right: 24px;
+      width: 1%;
+    }
+
+    .info-table td:last-child { color: var(--text); }
+
+    /* ── Privacy ── */
+    .privacy-box {
+      background: rgba(26,191,114,0.06);
+      border: 1px solid rgba(26,191,114,0.2);
+      border-radius: 18px;
+      padding: 24px 28px;
+      margin-bottom: 56px;
+      display: flex;
+      gap: 18px;
+      align-items: flex-start;
+    }
+
+    .privacy-box .icon { font-size: 1.6rem; flex-shrink: 0; }
+
+    .privacy-box h3 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--emerald);
+      margin-bottom: 6px;
+    }
+
+    .privacy-box p {
+      font-size: 0.85rem;
+      color: var(--text-dim);
+    }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 32px 24px;
+      border-top: 1px solid var(--card-border);
+      font-size: 0.8rem;
+      color: var(--text-dim);
+    }
+
+    footer .ornament { color: rgba(217,179,88,0.5); }
+  </style>
+</head>
+<body>
+
+  <!-- Hero -->
+  <section class="hero">
+    <p class="bismillah">بِسْمِ اللَّهِ الرَّحْمٰنِ الرَّحِيْمِ</p>
+    <span class="app-icon">🕋</span>
+    <h1>Qibla Finder Locator App</h1>
+    <div class="hero-divider">
+      <span></span>
+      <span class="ornament">۞</span>
+      <span></span>
+    </div>
+    <p class="hero-subtitle">
+      A precise, real-time compass that points every Muslim toward the Kaaba in Mecca —
+      wherever they are in the world.
+    </p>
+    <div class="badge-row">
+      <span class="badge badge-gold">iOS 18.6+</span>
+      <span class="badge badge-gold">iPadOS 18.6+</span>
+      <span class="badge badge-gold">macOS 15.6+</span>
+      <span class="badge badge-green">Free</span>
+    </div>
+  </section>
+
+  <div class="container">
+
+    <!-- Features -->
+    <p class="section-label">Features</p>
+    <div class="feature-grid">
+
+      <div class="card">
+        <span class="card-icon">🧭</span>
+        <h3>Live Qibla Compass</h3>
+        <p>The compass needle updates in real time using your device's magnetometer, always pointing toward the Kaaba.</p>
+      </div>
+
+      <div class="card">
+        <span class="card-icon">📍</span>
+        <h3>Current Location</h3>
+        <p>Automatically detects your city and country via reverse geocoding so you always know where you're praying from.</p>
+      </div>
+
+      <div class="card">
+        <span class="card-icon">📏</span>
+        <h3>Distance to Kaaba</h3>
+        <p>Displays your straight-line distance to the Kaaba in kilometres, calculated using the Haversine formula.</p>
+      </div>
+
+      <div class="card">
+        <span class="card-icon">🌙</span>
+        <h3>Elegant Dark UI</h3>
+        <p>A carefully crafted dark interface with gold and emerald accents inspired by Islamic geometric art.</p>
+      </div>
+
+      <div class="card">
+        <span class="card-icon">⚡️</span>
+        <h3>Instant & Offline</h3>
+        <p>No internet needed once your location is set. Bearing calculations run entirely on-device.</p>
+      </div>
+
+      <div class="card">
+        <span class="card-icon">🔋</span>
+        <h3>Battery Friendly</h3>
+        <p>Location and heading updates are stopped automatically when access is denied, preserving battery life.</p>
+      </div>
+
+    </div>
+
+    <!-- How it works -->
+    <p class="section-label">How It Works</p>
+    <div class="steps">
+
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h4>Grant Location Permission</h4>
+          <p>The app requests "When In Use" location access to determine your GPS coordinates.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h4>Calculate Qibla Bearing</h4>
+          <p>Using the spherical law of cosines, the app computes the great-circle bearing from your position to the Kaaba (21.4225° N, 39.8262° E).</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h4>Read Device Heading</h4>
+          <p>Your iPhone or iPad's magnetometer provides a live true-north heading, updated continuously.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h4>Point & Pray</h4>
+          <p>The compass arrow rotates to offset your current heading from the Qibla bearing. When the arrow points straight up, you're facing the Kaaba.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- App info -->
+    <p class="section-label">App Info</p>
+    <table class="info-table">
+      <tr>
+        <td>App Name</td>
+        <td>Qibla Finder Locator App</td>
+      </tr>
+      <tr>
+        <td>Platform</td>
+        <td>iPhone, iPad, Mac (Designed for iPad)</td>
+      </tr>
+      <tr>
+        <td>Minimum iOS</td>
+        <td>18.6</td>
+      </tr>
+      <tr>
+        <td>Minimum macOS</td>
+        <td>15.6 (Sequoia)</td>
+      </tr>
+      <tr>
+        <td>Language</td>
+        <td>Swift / SwiftUI</td>
+      </tr>
+      <tr>
+        <td>Frameworks</td>
+        <td>CoreLocation, Combine, SwiftUI</td>
+      </tr>
+      <tr>
+        <td>Version</td>
+        <td>1.0</td>
+      </tr>
+      <tr>
+        <td>Category</td>
+        <td>Utilities</td>
+      </tr>
+    </table>
+
+    <!-- Privacy -->
+    <div class="privacy-box">
+      <span class="icon">🔒</span>
+      <div>
+        <h3>Privacy First</h3>
+        <p>
+          Your location is used solely to calculate the Qibla direction and distance to the Kaaba.
+          No data is collected, stored, or transmitted to any server. Everything runs locally on your device.
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <span class="ornament">۞</span>&ensp;Qibla Finder Locator App&ensp;<span class="ornament">۞</span>
+    <br><br>
+    Made with care for Muslims around the world.
+  </footer>
+
+</body>
+</html>
