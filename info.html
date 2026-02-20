@@ -5,115 +5,204 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CIP Modelling — Info</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
     :root {
-      --bg:           #0e0f11;
-      --surface:      #16181d;
-      --surface-alt:  #1e2028;
-      --border:       rgba(255,255,255,0.07);
-      --gold:         #d4a843;
-      --gold-dim:     rgba(212,168,67,0.12);
-      --gold-glow:    rgba(212,168,67,0.18);
-      --blue:         #4a9eff;
-      --blue-dim:     rgba(74,158,255,0.12);
-      --text:         #f0f0f0;
-      --text-sec:     #9a9fa8;
-      --text-ter:     #5c6370;
-      --radius:       14px;
-      --radius-sm:    8px;
+      --bg:        #080a0d;
+      --s1:        #0e1116;
+      --s2:        #13161c;
+      --s3:        #1a1e27;
+      --gold:      #d4a843;
+      --gold2:     #f0c866;
+      --gold3:     #a07830;
+      --blue:      #4a9eff;
+      --blue2:     #78b8ff;
+      --text:      #eef0f4;
+      --t2:        #8b909c;
+      --t3:        #4a4f5c;
+      --r:         16px;
+      --r2:        10px;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
 
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
-      font-size: 15px;
-      line-height: 1.6;
-      padding: 28px 20px 60px;
+      font-family: 'Inter', -apple-system, sans-serif;
+      font-size: 14px;
+      line-height: 1.65;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Ambient background ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 20% 10%, rgba(212,168,67,0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 80% 80%, rgba(74,158,255,0.05) 0%, transparent 55%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Grid texture ── */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
       max-width: 680px;
       margin: 0 auto;
+      padding: 36px 20px 80px;
     }
 
-    /* ── Header ── */
-    .header {
+    /* ── Hero header ── */
+    .hero {
       text-align: center;
-      padding: 36px 24px 28px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      margin-bottom: 20px;
+      padding: 52px 32px 44px;
+      background: linear-gradient(160deg, var(--s2) 0%, var(--s1) 100%);
+      border: 1px solid rgba(212,168,67,0.18);
+      border-radius: 24px;
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
     }
 
-    .icon-ring {
-      width: 76px; height: 76px;
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -60px; left: 50%;
+      transform: translateX(-50%);
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(212,168,67,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-icon {
+      width: 88px; height: 88px;
       border-radius: 50%;
-      background: var(--gold-dim);
+      background: radial-gradient(circle at 35% 35%, rgba(212,168,67,0.25), rgba(212,168,67,0.06));
+      border: 1.5px solid rgba(212,168,67,0.3);
       display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 18px;
-      font-size: 34px;
+      margin: 0 auto 22px;
+      box-shadow: 0 0 40px rgba(212,168,67,0.15), inset 0 1px 0 rgba(255,255,255,0.08);
+      position: relative;
     }
 
-    .header h1 {
-      font-size: 22px;
+    .hero-icon svg { width: 40px; height: 40px; }
+
+    .hero h1 {
+      font-size: 28px;
       font-weight: 700;
-      color: var(--gold);
-      letter-spacing: -0.3px;
-      margin-bottom: 6px;
+      letter-spacing: -0.6px;
+      background: linear-gradient(135deg, var(--gold2) 0%, var(--gold) 50%, var(--gold3) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
     }
 
-    .header p {
-      font-size: 13px;
-      color: var(--text-sec);
+    .hero-sub {
+      font-size: 13.5px;
+      color: var(--t2);
+      font-weight: 400;
+      letter-spacing: 0.1px;
+    }
+
+    .hero-badges {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 18px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      font-size: 11px;
+      font-weight: 500;
+      padding: 4px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(212,168,67,0.25);
+      background: rgba(212,168,67,0.08);
+      color: var(--gold);
+      letter-spacing: 0.2px;
     }
 
     /* ── Cards ── */
     .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 20px;
-      margin-bottom: 20px;
+      background: linear-gradient(160deg, var(--s2) 0%, var(--s1) 100%);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: var(--r);
+      padding: 22px;
+      margin-bottom: 16px;
+      transition: border-color 0.25s;
     }
 
-    /* ── Section header ── */
-    .section-header {
+    .card:hover {
+      border-color: rgba(212,168,67,0.2);
+    }
+
+    /* ── Section title ── */
+    .sec-title {
       display: flex;
       align-items: center;
-      gap: 8px;
-      margin-bottom: 16px;
+      gap: 10px;
+      margin-bottom: 18px;
     }
 
-    .section-header .icon {
-      width: 28px; height: 28px;
-      border-radius: 7px;
-      background: var(--gold-dim);
+    .sec-icon {
+      width: 32px; height: 32px;
+      border-radius: 9px;
+      background: rgba(212,168,67,0.1);
+      border: 1px solid rgba(212,168,67,0.2);
       display: flex; align-items: center; justify-content: center;
-      font-size: 13px;
       flex-shrink: 0;
     }
 
-    .section-header h2 {
+    .sec-icon svg { width: 15px; height: 15px; }
+
+    .sec-title h2 {
       font-size: 15px;
       font-weight: 600;
       color: var(--text);
+      letter-spacing: -0.2px;
     }
 
-    /* ── Process steps ── */
+    /* ── Steps ── */
+    .steps { display: flex; flex-direction: column; gap: 0; }
+
     .step {
       display: flex;
       gap: 14px;
+      padding: 13px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
       align-items: flex-start;
-      padding: 10px 0;
-      border-bottom: 1px solid var(--border);
+      transition: all 0.2s;
     }
 
-    .step:last-child { border-bottom: none; }
+    .step:last-child { border-bottom: none; padding-bottom: 0; }
+    .step:first-child { padding-top: 0; }
 
     .step-num {
-      width: 26px; height: 26px;
+      width: 28px; height: 28px;
       border-radius: 50%;
-      background: var(--gold-dim);
+      background: linear-gradient(135deg, rgba(212,168,67,0.2), rgba(212,168,67,0.06));
+      border: 1px solid rgba(212,168,67,0.25);
       color: var(--gold);
       font-size: 12px;
       font-weight: 700;
@@ -122,7 +211,7 @@
       margin-top: 1px;
     }
 
-    .step-body strong {
+    .step strong {
       display: block;
       font-size: 13.5px;
       font-weight: 600;
@@ -130,381 +219,430 @@
       margin-bottom: 3px;
     }
 
-    .step-body span {
+    .step span {
       font-size: 12.5px;
-      color: var(--text-sec);
+      color: var(--t2);
+      line-height: 1.55;
     }
 
-    /* ── Model rows ── */
+    /* ── Model cards ── */
+    .models { display: flex; flex-direction: column; gap: 0; }
+
     .model-row {
       display: flex;
       gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
       align-items: flex-start;
-      padding: 12px 0;
-      border-bottom: 1px solid var(--border);
     }
 
-    .model-row:last-child { border-bottom: none; }
+    .model-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .model-row:first-child { padding-top: 0; }
 
     .model-icon {
-      width: 38px; height: 38px;
-      border-radius: var(--radius-sm);
-      background: var(--gold-dim);
+      width: 42px; height: 42px;
+      border-radius: var(--r2);
+      background: linear-gradient(135deg, rgba(212,168,67,0.15), rgba(212,168,67,0.04));
+      border: 1px solid rgba(212,168,67,0.2);
       display: flex; align-items: center; justify-content: center;
-      font-size: 17px;
       flex-shrink: 0;
+      font-size: 19px;
     }
 
-    .model-body strong {
-      display: block;
+    .model-name {
       font-size: 13.5px;
       font-weight: 600;
       color: var(--text);
       margin-bottom: 3px;
     }
 
-    .model-body span {
+    .model-desc {
       font-size: 12px;
-      color: var(--text-sec);
+      color: var(--t2);
+      line-height: 1.5;
+      margin-bottom: 8px;
     }
 
-    .model-params {
-      margin-top: 6px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 5px;
-    }
+    .pills { display: flex; flex-wrap: wrap; gap: 5px; }
 
-    .param-pill {
-      font-size: 11px;
-      font-weight: 600;
-      font-family: "SF Mono", "Fira Code", monospace;
-      color: var(--text-ter);
-      background: var(--surface-alt);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 2px 9px;
-    }
-
-    /* ── Equations ── */
-    .eq-row {
-      padding: 10px 0;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .eq-row:last-child { border-bottom: none; }
-
-    .eq-label {
-      font-size: 11.5px;
-      color: var(--text-sec);
-      margin-bottom: 4px;
-    }
-
-    .eq-formula {
-      font-size: 13.5px;
+    .pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
       font-weight: 500;
-      font-family: "SF Mono", "Fira Code", Georgia, serif;
       color: var(--gold);
+      background: rgba(212,168,67,0.08);
+      border: 1px solid rgba(212,168,67,0.18);
+      border-radius: 20px;
+      padding: 2px 10px;
       letter-spacing: 0.2px;
     }
 
-    .divider {
-      height: 1px;
-      background: var(--border);
-      margin: 8px 0;
+    /* ── Equations ── */
+    .eq-grid { display: flex; flex-direction: column; gap: 0; }
+
+    .eq-row {
+      padding: 11px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
     }
 
-    /* ── Parameters table ── */
-    .param-table {
+    .eq-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .eq-row:first-child { padding-top: 0; }
+
+    .eq-label {
+      font-size: 10.5px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+      color: var(--t3);
+      margin-bottom: 5px;
+    }
+
+    .eq {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--gold2);
+      letter-spacing: 0.1px;
+      line-height: 1.5;
+    }
+
+    .eq-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(212,168,67,0.2), transparent);
+      margin: 4px 0;
+    }
+
+    /* ── Param table ── */
+    .ptable {
       width: 100%;
       border-collapse: collapse;
-      font-size: 12.5px;
     }
 
-    .param-table th {
-      text-align: left;
-      color: var(--text-ter);
-      font-weight: 500;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-      padding: 6px 8px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .param-table td {
-      padding: 8px 8px;
-      border-bottom: 1px solid var(--border);
-      color: var(--text-sec);
-      vertical-align: top;
-    }
-
-    .param-table tr:last-child td { border-bottom: none; }
-
-    .param-table td:first-child {
-      font-family: "SF Mono", "Fira Code", monospace;
-      color: var(--gold);
+    .ptable th {
+      font-size: 10px;
       font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--t3);
+      padding: 0 10px 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      text-align: left;
+    }
+
+    .ptable th:first-child { padding-left: 0; }
+
+    .ptable td {
+      padding: 10px 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      font-size: 13px;
+      color: var(--t2);
+      vertical-align: middle;
+    }
+
+    .ptable td:first-child {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gold);
+      padding-left: 0;
       white-space: nowrap;
     }
 
-    .param-table td:last-child { color: var(--text-ter); }
-
-    /* ── Reference ── */
-    .ref-title {
-      font-size: 13px;
-      color: var(--text-sec);
-      margin-bottom: 4px;
+    .ptable td:last-child {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+      color: var(--t3);
     }
 
-    .ref-journal {
-      font-size: 12px;
-      color: var(--text-ter);
+    .ptable tr:last-child td { border-bottom: none; }
+
+    /* ── Reference ── */
+    .ref-box {
+      background: rgba(212,168,67,0.04);
+      border: 1px solid rgba(212,168,67,0.12);
+      border-radius: var(--r2);
+      padding: 14px 16px;
+    }
+
+    .ref-box p:first-child {
+      font-size: 13px;
+      color: var(--t2);
+      line-height: 1.55;
+      margin-bottom: 6px;
+    }
+
+    .ref-box p:last-child {
+      font-size: 11.5px;
+      color: var(--t3);
       font-style: italic;
     }
 
     /* ── Footer ── */
-    footer {
+    .footer {
       text-align: center;
-      margin-top: 32px;
+      margin-top: 40px;
       font-size: 11px;
-      color: var(--text-ter);
+      color: var(--t3);
+      letter-spacing: 0.3px;
     }
+
+    .footer span {
+      display: inline-block;
+      width: 3px; height: 3px;
+      background: var(--t3);
+      border-radius: 50%;
+      margin: 0 8px;
+      vertical-align: middle;
+    }
+
+    /* ── Subtle entrance animation ── */
+    .card, .hero {
+      animation: fadeUp 0.45s ease both;
+    }
+
+    .card:nth-child(2)  { animation-delay: 0.05s; }
+    .card:nth-child(3)  { animation-delay: 0.10s; }
+    .card:nth-child(4)  { animation-delay: 0.15s; }
+    .card:nth-child(5)  { animation-delay: 0.20s; }
+    .card:nth-child(6)  { animation-delay: 0.25s; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Gold pulse on hero icon ── */
+    @keyframes glow {
+      0%, 100% { box-shadow: 0 0 30px rgba(212,168,67,0.12), inset 0 1px 0 rgba(255,255,255,0.08); }
+      50%       { box-shadow: 0 0 60px rgba(212,168,67,0.22), inset 0 1px 0 rgba(255,255,255,0.08); }
+    }
+
+    .hero-icon { animation: glow 3s ease-in-out infinite; }
   </style>
 </head>
 <body>
+<div class="page">
 
-  <!-- Header -->
-  <div class="header">
-    <div class="icon-ring">⬡</div>
+  <!-- ── Hero ── -->
+  <div class="hero">
+    <div class="hero-icon">
+      <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="20,2 36,11 36,29 20,38 4,29 4,11" stroke="#d4a843" stroke-width="1.8" fill="rgba(212,168,67,0.1)"/>
+        <polygon points="20,9 30,14.5 30,25.5 20,31 10,25.5 10,14.5" stroke="#d4a843" stroke-width="1.2" fill="rgba(212,168,67,0.07)"/>
+        <circle cx="20" cy="20" r="4" fill="#d4a843" opacity="0.9"/>
+      </svg>
+    </div>
     <h1>Carbon in Pulp (CIP)</h1>
-    <p>Gold Cyanide Leaching Process Simulator</p>
+    <p class="hero-sub">Gold Cyanide Leaching Process Simulator</p>
+    <div class="hero-badges">
+      <span class="badge">5 Kinetic Models</span>
+      <span class="badge">Counter-Current Flow</span>
+      <span class="badge">Au Adsorption</span>
+    </div>
   </div>
 
-  <!-- Process -->
+  <!-- ── Process ── -->
   <div class="card">
-    <div class="section-header">
-      <div class="icon">ℹ</div>
+    <div class="sec-title">
+      <div class="sec-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#d4a843" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+      </div>
       <h2>The CIP Process</h2>
     </div>
 
-    <div class="step">
-      <div class="step-num">1</div>
-      <div class="step-body">
-        <strong>Ore Grinding</strong>
-        <span>Ore is ground below 75 μm and mixed with dilute cyanide solution at pH &gt; 10.</span>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div>
+          <strong>Ore Grinding</strong>
+          <span>Ore is ground below 75 μm and mixed with dilute cyanide solution at pH&nbsp;&gt;&nbsp;10.</span>
+        </div>
       </div>
-    </div>
-
-    <div class="step">
-      <div class="step-num">2</div>
-      <div class="step-body">
-        <strong>Gold Leaching</strong>
-        <span>Au⁰ + 2CN⁻ + ½H₂O + ¼O₂ → Au(CN)₂⁻ + OH⁻ &nbsp;(completes in ~24 hrs)</span>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div>
+          <strong>Gold Leaching</strong>
+          <span>Au⁰ + 2CN⁻ + ½H₂O + ¼O₂ → Au(CN)₂⁻ + OH⁻ &nbsp;(completes in ~24 hrs)</span>
+        </div>
       </div>
-    </div>
-
-    <div class="step">
-      <div class="step-num">3</div>
-      <div class="step-body">
-        <strong>Carbon Adsorption</strong>
-        <span>Slurry passes through counter-current adsorption tanks. Activated carbon adsorbs Au(CN)₂⁻.</span>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div>
+          <strong>Carbon Adsorption</strong>
+          <span>Slurry passes through counter-current adsorption tanks. Activated carbon adsorbs Au(CN)₂⁻.</span>
+        </div>
       </div>
-    </div>
-
-    <div class="step">
-      <div class="step-num">4</div>
-      <div class="step-body">
-        <strong>Gold Stripping</strong>
-        <span>Loaded carbon from Tank 1 is stripped in an elution column to recover gold.</span>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div>
+          <strong>Gold Stripping</strong>
+          <span>Loaded carbon from Tank 1 is stripped in an elution column to recover gold.</span>
+        </div>
       </div>
-    </div>
-
-    <div class="step">
-      <div class="step-num">5</div>
-      <div class="step-body">
-        <strong>Carbon Regeneration</strong>
-        <span>Barren carbon is regenerated in a kiln and returned to the last tank.</span>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div>
+          <strong>Carbon Regeneration</strong>
+          <span>Barren carbon is regenerated in a kiln and returned to the last tank.</span>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Kinetic Models -->
+  <!-- ── Models ── -->
   <div class="card">
-    <div class="section-header">
-      <div class="icon">〜</div>
+    <div class="sec-title">
+      <div class="sec-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#d4a843" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+        </svg>
+      </div>
       <h2>Kinetic Models</h2>
     </div>
 
-    <div class="model-row">
-      <div class="model-icon">𝑓</div>
-      <div class="model-body">
-        <strong>k-n Model</strong>
-        <span>Fleming power-law rate model. Two parameters: rate constant k and exponent n.</span>
-        <div class="model-params">
-          <span class="param-pill">k</span>
-          <span class="param-pill">n</span>
+    <div class="models">
+      <div class="model-row">
+        <div class="model-icon">𝑓</div>
+        <div>
+          <div class="model-name">k-n Model</div>
+          <div class="model-desc">Fleming power-law rate model. Two parameters: rate constant k and exponent n.</div>
+          <div class="pills"><span class="pill">k</span><span class="pill">n</span></div>
         </div>
       </div>
-    </div>
-
-    <div class="model-row">
-      <div class="model-icon">⇌</div>
-      <div class="model-body">
-        <strong>Nicol-Fleming</strong>
-        <span>Equilibrium-based rate model. Parameters: rate constant k and equilibrium constant K.</span>
-        <div class="model-params">
-          <span class="param-pill">k</span>
-          <span class="param-pill">K</span>
+      <div class="model-row">
+        <div class="model-icon">⇌</div>
+        <div>
+          <div class="model-name">Nicol-Fleming</div>
+          <div class="model-desc">Equilibrium-based rate model. Parameters: rate constant k and equilibrium constant K.</div>
+          <div class="pills"><span class="pill">k</span><span class="pill">K</span></div>
         </div>
       </div>
-    </div>
-
-    <div class="model-row">
-      <div class="model-icon">▦</div>
-      <div class="model-body">
-        <strong>Film Diff. Freundlich</strong>
-        <span>Film diffusion through surface layer with Freundlich isotherm. Best for complex ores.</span>
-        <div class="model-params">
-          <span class="param-pill">Ac·kf</span>
-          <span class="param-pill">n</span>
-          <span class="param-pill">K</span>
+      <div class="model-row">
+        <div class="model-icon">▦</div>
+        <div>
+          <div class="model-name">Film Diff. Freundlich</div>
+          <div class="model-desc">Film diffusion through surface layer with Freundlich isotherm. Best for complex ores.</div>
+          <div class="pills"><span class="pill">Ac·kf</span><span class="pill">n</span><span class="pill">K</span></div>
         </div>
       </div>
-    </div>
-
-    <div class="model-row">
-      <div class="model-icon">📈</div>
-      <div class="model-body">
-        <strong>Film Diff. Langmuir</strong>
-        <span>Film diffusion with Langmuir isotherm. Best-fit model for most CIP plants (R² &gt; 0.95).</span>
-        <div class="model-params">
-          <span class="param-pill">Ac·kf</span>
-          <span class="param-pill">b</span>
-          <span class="param-pill">K</span>
+      <div class="model-row">
+        <div class="model-icon">∿</div>
+        <div>
+          <div class="model-name">Film Diff. Langmuir</div>
+          <div class="model-desc">Film diffusion with Langmuir isotherm. Best-fit model for most CIP plants (R²&nbsp;&gt;&nbsp;0.95).</div>
+          <div class="pills"><span class="pill">Ac·kf</span><span class="pill">b</span><span class="pill">K</span></div>
         </div>
       </div>
-    </div>
-
-    <div class="model-row">
-      <div class="model-icon">↺</div>
-      <div class="model-body">
-        <strong>Dixon</strong>
-        <span>Dual-rate model accounting for both adsorption and desorption simultaneously.</span>
-        <div class="model-params">
-          <span class="param-pill">k₁</span>
-          <span class="param-pill">k₂</span>
-          <span class="param-pill">K</span>
+      <div class="model-row">
+        <div class="model-icon">↺</div>
+        <div>
+          <div class="model-name">Dixon</div>
+          <div class="model-desc">Dual-rate model accounting for both adsorption and desorption simultaneously.</div>
+          <div class="pills"><span class="pill">k₁</span><span class="pill">k₂</span><span class="pill">K</span></div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Key Equations -->
+  <!-- ── Equations ── -->
   <div class="card">
-    <div class="section-header">
-      <div class="icon">∫</div>
+    <div class="sec-title">
+      <div class="sec-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#d4a843" stroke-width="2" stroke-linecap="round">
+          <line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/>
+          <line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/>
+        </svg>
+      </div>
       <h2>Key Equations</h2>
     </div>
 
-    <div class="eq-row">
-      <div class="eq-label">Mass Balance</div>
-      <div class="eq-formula">Vs(Cₙ₋₁ − Cₙ) = Vc(Qₙ₋₁ − Qₙ)</div>
-    </div>
-    <div class="eq-row">
-      <div class="eq-label">Carbon Volumetric Flow</div>
-      <div class="eq-formula">Vc = Mc / tc</div>
-    </div>
-    <div class="eq-row">
-      <div class="eq-label">Rate (general)</div>
-      <div class="eq-formula">R = dQ/dt = (Qₙ₋₁ − Qₙ) / tc</div>
-    </div>
+    <div class="eq-grid">
+      <div class="eq-row">
+        <div class="eq-label">Mass Balance</div>
+        <div class="eq">Vs(Cₙ₋₁ − Cₙ) = Vc(Qₙ₋₁ − Qₙ)</div>
+      </div>
+      <div class="eq-row">
+        <div class="eq-label">Carbon Flow</div>
+        <div class="eq">Vc = Mc / tc</div>
+      </div>
+      <div class="eq-row">
+        <div class="eq-label">Rate (general)</div>
+        <div class="eq">R = dQ/dt = (Qₙ₋₁ − Qₙ) / tc</div>
+      </div>
 
-    <div class="divider"></div>
+      <div class="eq-divider"></div>
 
-    <div class="eq-row">
-      <div class="eq-label">k,n Model</div>
-      <div class="eq-formula">log((Qₙ₋₁ − Qₙ)/C) = log(k) + n·log(tc)</div>
-    </div>
-    <div class="eq-row">
-      <div class="eq-label">Nicol-Fleming</div>
-      <div class="eq-formula">R = k(KC − Q)</div>
-    </div>
-    <div class="eq-row">
-      <div class="eq-label">Johns (Freundlich)</div>
-      <div class="eq-formula">R = Ac·kf·(C − (Q/K)ⁿ)</div>
-    </div>
-    <div class="eq-row">
-      <div class="eq-label">Langmuir</div>
-      <div class="eq-formula">R = Ac·kf·(C − bQ/(K − Q))</div>
-    </div>
-    <div class="eq-row">
-      <div class="eq-label">Dixon</div>
-      <div class="eq-formula">R = k₁·C·(K − Q) − k₂·Q</div>
+      <div class="eq-row">
+        <div class="eq-label">k,n Model</div>
+        <div class="eq">log((Qₙ₋₁ − Qₙ)/C) = log(k) + n·log(tc)</div>
+      </div>
+      <div class="eq-row">
+        <div class="eq-label">Nicol-Fleming</div>
+        <div class="eq">R = k(KC − Q)</div>
+      </div>
+      <div class="eq-row">
+        <div class="eq-label">Johns · Freundlich</div>
+        <div class="eq">R = Ac·kf·(C − (Q/K)ⁿ)</div>
+      </div>
+      <div class="eq-row">
+        <div class="eq-label">Langmuir</div>
+        <div class="eq">R = Ac·kf·(C − bQ/(K − Q))</div>
+      </div>
+      <div class="eq-row">
+        <div class="eq-label">Dixon</div>
+        <div class="eq">R = k₁·C·(K − Q) − k₂·Q</div>
+      </div>
     </div>
   </div>
 
-  <!-- Plant Parameters -->
+  <!-- ── Parameters ── -->
   <div class="card">
-    <div class="section-header">
-      <div class="icon">⚙</div>
+    <div class="sec-title">
+      <div class="sec-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#d4a843" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/>
+        </svg>
+      </div>
       <h2>Plant Parameters</h2>
     </div>
 
-    <table class="param-table">
+    <table class="ptable">
       <thead>
-        <tr>
-          <th>Symbol</th>
-          <th>Name</th>
-          <th>Unit</th>
-        </tr>
+        <tr><th>Symbol</th><th>Name</th><th>Unit</th></tr>
       </thead>
       <tbody>
-        <tr>
-          <td>C₀</td>
-          <td>Feed solution Au concentration</td>
-          <td>ppm</td>
-        </tr>
-        <tr>
-          <td>Q₀</td>
-          <td>Barren carbon Au loading</td>
-          <td>ppm</td>
-        </tr>
-        <tr>
-          <td>Vs</td>
-          <td>Solution flow rate</td>
-          <td>Mg/hr</td>
-        </tr>
-        <tr>
-          <td>Mc</td>
-          <td>Carbon mass per tank</td>
-          <td>Mg</td>
-        </tr>
-        <tr>
-          <td>tc</td>
-          <td>Carbon contact time per tank</td>
-          <td>hr</td>
-        </tr>
-        <tr>
-          <td>N</td>
-          <td>Number of adsorption tanks</td>
-          <td>—</td>
-        </tr>
+        <tr><td>C₀</td><td>Feed solution Au concentration</td><td>ppm</td></tr>
+        <tr><td>Q₀</td><td>Barren carbon Au loading</td><td>ppm</td></tr>
+        <tr><td>Vs</td><td>Solution flow rate</td><td>Mg/hr</td></tr>
+        <tr><td>Mc</td><td>Carbon mass per tank</td><td>Mg</td></tr>
+        <tr><td>tc</td><td>Carbon contact time per tank</td><td>hr</td></tr>
+        <tr><td>N</td><td>Number of adsorption tanks</td><td>—</td></tr>
       </tbody>
     </table>
   </div>
 
-  <!-- Reference -->
+  <!-- ── Reference ── -->
   <div class="card">
-    <div class="section-header">
-      <div class="icon">📖</div>
+    <div class="sec-title">
+      <div class="sec-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#d4a843" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+        </svg>
+      </div>
       <h2>Reference</h2>
     </div>
-    <p class="ref-title">Modeling of the Carbon in Pulp (CIP) Process in Gold Cyanide Leaching Plants Using the Plant Data.</p>
-    <p class="ref-journal">Physicochemical Problems of Mineral Processing, 50(2), 841–852.</p>
+    <div class="ref-box">
+      <p>Modeling of the Carbon in Pulp (CIP) Process in Gold Cyanide Leaching Plants Using the Plant Data.</p>
+      <p>Physicochemical Problems of Mineral Processing, 50(2), 841–852.</p>
+    </div>
   </div>
 
-  <footer>CIP Modelling &nbsp;·&nbsp; Gold Process Simulator</footer>
+  <div class="footer">
+    CIP Modelling<span></span>Gold Process Simulator
+  </div>
 
+</div>
 </body>
 </html>
