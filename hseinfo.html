@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HSE Incident Reporter — App Info</title>
+  <style>
+    :root {
+      --red:        #E8920A;
+      --red-dark:   #B86808;
+      --red-soft:   rgba(232,146,10,0.10);
+      --red-border: rgba(232,146,10,0.24);
+      --ink:        #1a1c22;
+      --muted:      #5a6170;
+      --canvas:     #f5f6fa;
+      --card:       #ffffff;
+      --border:     #e2e6ee;
+      --blue:       #1a4ab8;
+      --green:      #1a7a40;
+      --amber:      #c97a0a;
+      --radius-lg:  18px;
+      --radius-md:  12px;
+      --radius-sm:  8px;
+      --shadow-sm:  0 2px 8px rgba(0,0,0,0.06);
+      --shadow-md:  0 6px 24px rgba(0,0,0,0.09);
+      --shadow-lg:  0 16px 48px rgba(0,0,0,0.12);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--canvas);
+      color: var(--ink);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--red); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Hero ─────────────────────────────────────────────────── */
+    .hero {
+      background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
+      color: #fff;
+      padding: 80px 24px 90px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 80% at 80% -20%, rgba(255,255,255,0.10) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 60% at 20% 110%, rgba(0,0,0,0.15) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 99px;
+      padding: 6px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .hero-icon {
+      width: 80px;
+      height: 80px;
+      background: rgba(255,255,255,0.15);
+      border: 2px solid rgba(255,255,255,0.30);
+      border-radius: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 38px;
+      margin: 0 auto 24px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.20);
+    }
+    .hero h1 {
+      font-size: clamp(28px, 5vw, 48px);
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 16px;
+      line-height: 1.15;
+    }
+    .hero p {
+      font-size: clamp(15px, 2vw, 18px);
+      opacity: 0.88;
+      max-width: 560px;
+      margin: 0 auto 36px;
+      line-height: 1.7;
+    }
+    .hero-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+    .hero-pill {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 99px;
+      padding: 7px 18px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    /* ── Layout ───────────────────────────────────────────────── */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    section { padding: 72px 0; }
+    section + section { border-top: 1px solid var(--border); }
+
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(22px, 3.5vw, 32px);
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+    .section-sub {
+      font-size: 16px;
+      color: var(--muted);
+      max-width: 520px;
+      line-height: 1.7;
+    }
+
+    /* ── Workflow Steps ───────────────────────────────────────── */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-top: 48px;
+    }
+    .step-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px 24px;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .step-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+    }
+    .step-card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--red), var(--red-dark));
+    }
+    .step-number {
+      width: 32px;
+      height: 32px;
+      background: var(--red-soft);
+      border: 1px solid var(--red-border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--red);
+      margin-bottom: 16px;
+    }
+    .step-icon { font-size: 28px; margin-bottom: 12px; display: block; }
+    .step-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .step-desc {
+      font-size: 13.5px;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* ── Incident Types ───────────────────────────────────────── */
+    .types-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 12px;
+      margin-top: 40px;
+    }
+    .type-chip {
+      border-radius: var(--radius-md);
+      padding: 16px 14px;
+      text-align: center;
+      border: 1px solid transparent;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .type-chip:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    .type-chip .chip-icon { font-size: 22px; margin-bottom: 8px; display: block; }
+    .type-chip .chip-label { font-size: 12px; font-weight: 700; line-height: 1.3; }
+    .type-chip .chip-tag {
+      display: inline-block;
+      margin-top: 4px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.6px;
+      opacity: 0.75;
+    }
+
+    .chip-death       { background: #fdecea; border-color: #f8b4b0; color: #7a0a0a; }
+    .chip-lti         { background: #fdecea; border-color: #f8b4b0; color: #8a1010; }
+    .chip-rwi         { background: #fef0e6; border-color: #fac49a; color: #8a3300; }
+    .chip-mti         { background: #fef5e6; border-color: #f7d899; color: #7a4a00; }
+    .chip-fai         { background: #fdf6e6; border-color: #f5d58a; color: #6a4000; }
+    .chip-property    { background: #e8eef8; border-color: #b0c4e8; color: #1a3060; }
+    .chip-production  { background: #e8eaf8; border-color: #b0b8f0; color: #1a2080; }
+    .chip-nearmiss    { background: #e8f5ee; border-color: #96d8b0; color: #0a4424; }
+    .chip-incident    { background: #edeef2; border-color: #c0c4d0; color: #2a2e3c; }
+
+    /* ── Root Causes ──────────────────────────────────────────── */
+    .causes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin-top: 40px;
+    }
+    .cause-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 22px 20px;
+      box-shadow: var(--shadow-sm);
+    }
+    .cause-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .cause-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .cause-title { font-size: 14px; font-weight: 700; }
+    .cause-count {
+      margin-left: auto;
+      font-size: 11px;
+      font-weight: 700;
+      background: #f0f2f7;
+      border-radius: 99px;
+      padding: 2px 10px;
+      color: var(--muted);
+    }
+    .cause-factors {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .cause-factors li {
+      font-size: 12.5px;
+      color: var(--muted);
+      padding-left: 14px;
+      position: relative;
+      line-height: 1.5;
+    }
+    .cause-factors li::before {
+      content: "·";
+      position: absolute;
+      left: 4px;
+      font-weight: 900;
+    }
+    .cause-factors li.more {
+      font-style: italic;
+      color: #9ba3b4;
+    }
+
+    /* ── Risk Matrix ──────────────────────────────────────────── */
+    .risk-section { background: #fff; }
+    .risk-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-top: 48px;
+      align-items: center;
+    }
+    @media (max-width: 640px) { .risk-layout { grid-template-columns: 1fr; } }
+
+    .risk-matrix-wrap { overflow-x: auto; }
+    .risk-matrix {
+      border-collapse: separate;
+      border-spacing: 4px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .risk-matrix th {
+      padding: 4px 8px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 600;
+      text-align: center;
+    }
+    .risk-matrix td {
+      width: 46px;
+      height: 38px;
+      border-radius: 7px;
+      text-align: center;
+      vertical-align: middle;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 800;
+    }
+    .rm-low     { background: #1e9e48; }
+    .rm-medium  { background: #e8990e; }
+    .rm-high    { background: #e0500e; }
+    .rm-extreme { background: #b81218; }
+    .rm-axis    { background: none; color: var(--muted); font-weight: 700; font-size: 11px; }
+
+    .risk-levels { display: flex; flex-direction: column; gap: 12px; }
+    .risk-level-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px 16px;
+      border-radius: var(--radius-md);
+      border: 1px solid transparent;
+    }
+    .risk-level-row .rl-dot {
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 4px;
+    }
+    .rl-low     { background: #edf8f2; border-color: #a0ddb8; }
+    .rl-medium  { background: #fef8e8; border-color: #f5d880; }
+    .rl-high    { background: #fef0e8; border-color: #f4b070; }
+    .rl-extreme { background: #fdecea; border-color: #f0a0a0; }
+    .rl-low .rl-dot    { background: #1e9e48; }
+    .rl-medium .rl-dot { background: #e8990e; }
+    .rl-high .rl-dot   { background: #e0500e; }
+    .rl-extreme .rl-dot{ background: #b81218; }
+    .rl-name { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+    .rl-range { font-size: 12px; color: var(--muted); }
+
+    /* ── PDF Section ──────────────────────────────────────────── */
+    .pdf-features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px;
+      margin-top: 40px;
+    }
+    .pdf-feature {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 18px 16px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .pdf-feature .pf-icon {
+      font-size: 20px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .pdf-feature .pf-title { font-size: 13.5px; font-weight: 700; margin-bottom: 3px; }
+    .pdf-feature .pf-desc  { font-size: 12px; color: var(--muted); line-height: 1.55; }
+
+    /* ── App Features ─────────────────────────────────────────── */
+    .features-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-top: 40px;
+    }
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 18px 16px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+    }
+    .feature-item .fi-icon {
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .feature-item .fi-title { font-size: 13.5px; font-weight: 700; margin-bottom: 3px; }
+    .feature-item .fi-desc  { font-size: 12.5px; color: var(--muted); line-height: 1.55; }
+
+    /* ── Stats Bar ────────────────────────────────────────────── */
+    .stats-bar {
+      background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
+      color: #fff;
+      padding: 48px 24px;
+    }
+    .stats-inner {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 24px;
+      max-width: 960px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .stat-item .stat-number {
+      font-size: 42px;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -2px;
+      margin-bottom: 6px;
+    }
+    .stat-item .stat-label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.8px;
+      opacity: 0.82;
+      text-transform: uppercase;
+    }
+
+    /* ── Footer ───────────────────────────────────────────────── */
+    footer {
+      background: var(--ink);
+      color: rgba(255,255,255,0.55);
+      text-align: center;
+      padding: 36px 24px;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+    footer strong { color: rgba(255,255,255,0.85); }
+
+    /* ── Utility ──────────────────────────────────────────────── */
+    .text-red { color: var(--red); }
+    .mt-2 { margin-top: 8px; }
+    .mt-3 { margin-top: 12px; }
+
+    .divider-rule {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════ HERO ══════════ -->
+<header class="hero">
+  <div class="hero-badge">
+    <span>📱</span> iOS App
+  </div>
+  <div class="hero-icon">📋</div>
+  <h1>HSE Incident Reporter</h1>
+  <p>A structured, field-ready tool to document, classify, and share workplace incidents — from the scene to a professional PDF in minutes.</p>
+  <div class="hero-pills">
+    <span class="hero-pill">4-Step Workflow</span>
+    <span class="hero-pill">9 Incident Types</span>
+    <span class="hero-pill">40+ Root Causes</span>
+    <span class="hero-pill">5×5 Risk Matrix</span>
+    <span class="hero-pill">PDF Export</span>
+  </div>
+</header>
+
+
+<!-- ══════════ STATS ══════════ -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <div class="stat-number">4</div>
+      <div class="stat-label">Guided Steps</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">9</div>
+      <div class="stat-label">Incident Types</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">40+</div>
+      <div class="stat-label">Root Cause Factors</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">10</div>
+      <div class="stat-label">Max Photos</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">5×5</div>
+      <div class="stat-label">Risk Matrix</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════ WORKFLOW ══════════ -->
+<section>
+  <div class="container">
+    <div class="section-label">⚡ Workflow</div>
+    <h2 class="section-title">Four steps from scene to report</h2>
+    <p class="section-sub">Every step is saved automatically. Navigate forward and back freely — or swipe from the screen edge.</p>
+
+    <div class="steps-grid">
+
+      <div class="step-card">
+        <div class="step-number">1</div>
+        <span class="step-icon">📷</span>
+        <div class="step-title">Capture</div>
+        <p class="step-desc">Select the incident classification from 9 categories and attach up to 10 photos from camera or photo library. The "Next" button unlocks only when a type is chosen.</p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">2</div>
+        <span class="step-icon">📋</span>
+        <div class="step-title">Details</div>
+        <p class="step-desc">Record the reporter name, department, shift, incident date &amp; time, exact location, and a full narrative description. Report date is auto-stamped when you advance to this step.</p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">3</div>
+        <span class="step-icon">🔍</span>
+        <div class="step-title">Root Causes</div>
+        <p class="step-desc">Choose all contributing factors from a structured list across 5 categories. Use the built-in search to quickly find relevant causes. Multiple selections supported, plus a custom "Other" field.</p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">4</div>
+        <span class="step-icon">📊</span>
+        <div class="step-title">Risk Matrix</div>
+        <p class="step-desc">Set Likelihood (1–5) and Severity (1–5) with plain-English guidance at each level. A live 5×5 matrix displays your score. Add immediate corrective actions, then export the PDF.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════ INCIDENT TYPES ══════════ -->
+<section style="background:#fff;">
+  <div class="container">
+    <div class="section-label">🏷️ Classification</div>
+    <h2 class="section-title">9 Incident Types</h2>
+    <p class="section-sub">Each type has a dedicated colour, icon, and severity context — clearly highlighted in the report PDF.</p>
+
+    <div class="types-grid">
+
+      <div class="type-chip chip-death">
+        <span class="chip-icon">✝️</span>
+        <div class="chip-label">Death</div>
+        <div class="chip-tag">FATAL</div>
+      </div>
+
+      <div class="type-chip chip-lti">
+        <span class="chip-icon">⭐</span>
+        <div class="chip-label">LTI</div>
+        <div class="chip-tag">LOST TIME INJURY</div>
+      </div>
+
+      <div class="type-chip chip-rwi">
+        <span class="chip-icon">🩹</span>
+        <div class="chip-label">RWI</div>
+        <div class="chip-tag">RESTRICTED WORK</div>
+      </div>
+
+      <div class="type-chip chip-mti">
+        <span class="chip-icon">🧳</span>
+        <div class="chip-label">MTI</div>
+        <div class="chip-tag">MEDICAL TREATMENT</div>
+      </div>
+
+      <div class="type-chip chip-fai">
+        <span class="chip-icon">🩺</span>
+        <div class="chip-label">FAI</div>
+        <div class="chip-tag">FIRST AID</div>
+      </div>
+
+      <div class="type-chip chip-property">
+        <span class="chip-icon">🏗️</span>
+        <div class="chip-label">Property Damage</div>
+        <div class="chip-tag">ASSET</div>
+      </div>
+
+      <div class="type-chip chip-production">
+        <span class="chip-icon">📉</span>
+        <div class="chip-label">Production Loss</div>
+        <div class="chip-tag">OPERATIONAL</div>
+      </div>
+
+      <div class="type-chip chip-nearmiss">
+        <span class="chip-icon">⚡</span>
+        <div class="chip-label">Near Miss</div>
+        <div class="chip-tag">POTENTIAL</div>
+      </div>
+
+      <div class="type-chip chip-incident">
+        <span class="chip-icon">⚠️</span>
+        <div class="chip-label">Incident</div>
+        <div class="chip-tag">GENERAL</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════ ROOT CAUSES ══════════ -->
+<section>
+  <div class="container">
+    <div class="section-label">🔍 Root Cause Analysis</div>
+    <h2 class="section-title">40+ structured root causes</h2>
+    <p class="section-sub">Organised into five categories for systematic analysis. Search across all factors instantly. Select multiple, or write your own under "Other".</p>
+
+    <div class="causes-grid">
+
+      <div class="cause-card">
+        <div class="cause-header">
+          <div class="cause-dot" style="background:#d93222;"></div>
+          <div class="cause-title">Human Factors</div>
+          <div class="cause-count">19</div>
+        </div>
+        <ul class="cause-factors">
+          <li>Incorrect PPE Use</li>
+          <li>Removing Safety Equipment from Use</li>
+          <li>Damaging Safety Equipment</li>
+          <li>Lack of Knowledge About the Work</li>
+          <li>Isolation Failure (No/Missing Barricading)</li>
+          <li>Failure to Activate Warning/Alert Systems</li>
+          <li>Working at Inappropriate Speeds</li>
+          <li class="more">+ 12 more factors…</li>
+        </ul>
+      </div>
+
+      <div class="cause-card">
+        <div class="cause-header">
+          <div class="cause-dot" style="background:#1a5cb8;"></div>
+          <div class="cause-title">Training Factors</div>
+          <div class="cause-count">9</div>
+        </div>
+        <ul class="cause-factors">
+          <li>Lack of Induction or Repeat Training</li>
+          <li>Lack of Knowledge on Using PPE</li>
+          <li>Lack of Knowledge on Procedures</li>
+          <li>Lack of Knowledge on Work Permits</li>
+          <li>Lack of Knowledge on Equipment Use</li>
+          <li>Lack of Emergency Response Knowledge</li>
+          <li>Inability to Conduct Incident Analysis</li>
+          <li>Lack of Knowledge and Skills Training</li>
+          <li>Lack of Leadership Training</li>
+        </ul>
+      </div>
+
+      <div class="cause-card">
+        <div class="cause-header">
+          <div class="cause-dot" style="background:#1a8844;"></div>
+          <div class="cause-title">Environmental Factors</div>
+          <div class="cause-count">10</div>
+        </div>
+        <ul class="cause-factors">
+          <li>Restricted Movement Due to Limited Space</li>
+          <li>Areas with Fire and Explosion Hazards</li>
+          <li>Poor Housekeeping, Unorganized Work Area</li>
+          <li>Hazardous Conditions (Gases, Dust, Smoke)</li>
+          <li>Noisy Work Environment</li>
+          <li>Areas with Radiation Hazards</li>
+          <li>Exposure to High or Low Temperatures</li>
+          <li class="more">+ 3 more factors…</li>
+        </ul>
+      </div>
+
+      <div class="cause-card">
+        <div class="cause-header">
+          <div class="cause-dot" style="background:#7a34c8;"></div>
+          <div class="cause-title">Equipment Factors</div>
+          <div class="cause-count">6</div>
+        </div>
+        <ul class="cause-factors">
+          <li>Insufficient Maintenance</li>
+          <li>Insufficient/Out of Standard Safeguards</li>
+          <li>Damaged Tools, Equipment, or Materials</li>
+          <li>Insufficient Warning System</li>
+          <li>Wear and Breakdown</li>
+          <li>Malfunction Due to Abuse or Misuse</li>
+        </ul>
+      </div>
+
+      <div class="cause-card">
+        <div class="cause-header">
+          <div class="cause-dot" style="background:#c07010;"></div>
+          <div class="cause-title">Administrative Factors</div>
+          <div class="cause-count">9</div>
+        </div>
+        <ul class="cause-factors">
+          <li>Inadequate Leadership and/or Supervision</li>
+          <li>Problems in Procuring Materials</li>
+          <li>Failure to Provide Appropriate PPE</li>
+          <li>Inappropriate Purchasing</li>
+          <li>Failure to Review and Evaluate the System</li>
+          <li>Ineffective Engineering &amp; Change Management</li>
+          <li>Inadequate Health and Hygiene Control</li>
+          <li class="more">+ 2 more factors…</li>
+        </ul>
+      </div>
+
+      <div class="cause-card" style="border-style: dashed;">
+        <div class="cause-header">
+          <div class="cause-dot" style="background:#9ba3b4;"></div>
+          <div class="cause-title">Other</div>
+        </div>
+        <p style="font-size:13px; color:var(--muted); line-height:1.6;">
+          A free-text field for any root cause not covered by the structured list above. Appears in the PDF under its own category.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════ RISK MATRIX ══════════ -->
+<section class="risk-section">
+  <div class="container">
+    <div class="section-label">📊 Risk Assessment</div>
+    <h2 class="section-title">Live 5 × 5 Risk Matrix</h2>
+    <p class="section-sub">Score Likelihood and Severity independently from 1 to 5. The matrix updates in real time and calculates the overall risk level.</p>
+
+    <div class="risk-layout">
+
+      <!-- Matrix Table -->
+      <div class="risk-matrix-wrap">
+        <table class="risk-matrix">
+          <thead>
+            <tr>
+              <th style="text-align:left;">L \ S</th>
+              <th>S1</th><th>S2</th><th>S3</th><th>S4</th><th>S5</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="rm-axis">L5</td>
+              <td class="rm-medium">5</td>
+              <td class="rm-medium">10</td>
+              <td class="rm-high">15</td>
+              <td class="rm-extreme">20</td>
+              <td class="rm-extreme">25</td>
+            </tr>
+            <tr>
+              <td class="rm-axis">L4</td>
+              <td class="rm-low">4</td>
+              <td class="rm-medium">8</td>
+              <td class="rm-high">12</td>
+              <td class="rm-high">16</td>
+              <td class="rm-extreme">20</td>
+            </tr>
+            <tr>
+              <td class="rm-axis">L3</td>
+              <td class="rm-low">3</td>
+              <td class="rm-medium">6</td>
+              <td class="rm-medium">9</td>
+              <td class="rm-high">12</td>
+              <td class="rm-high">15</td>
+            </tr>
+            <tr>
+              <td class="rm-axis">L2</td>
+              <td class="rm-low">2</td>
+              <td class="rm-low">4</td>
+              <td class="rm-medium">6</td>
+              <td class="rm-medium">8</td>
+              <td class="rm-high">10</td>
+            </tr>
+            <tr>
+              <td class="rm-axis">L1</td>
+              <td class="rm-low">1</td>
+              <td class="rm-low">2</td>
+              <td class="rm-low">3</td>
+              <td class="rm-low">4</td>
+              <td class="rm-medium">5</td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="font-size:11px; color:var(--muted); margin-top:10px;">L = Likelihood &nbsp;·&nbsp; S = Severity</p>
+      </div>
+
+      <!-- Risk Levels -->
+      <div class="risk-levels">
+
+        <div class="risk-level-row rl-low">
+          <div class="rl-dot"></div>
+          <div>
+            <div class="rl-name">Low</div>
+            <div class="rl-range">Score 1 – 4 &nbsp;·&nbsp; Routine controls adequate</div>
+          </div>
+        </div>
+
+        <div class="risk-level-row rl-medium">
+          <div class="rl-dot"></div>
+          <div>
+            <div class="rl-name">Medium</div>
+            <div class="rl-range">Score 5 – 9 &nbsp;·&nbsp; Additional controls required</div>
+          </div>
+        </div>
+
+        <div class="risk-level-row rl-high">
+          <div class="rl-dot"></div>
+          <div>
+            <div class="rl-name">High</div>
+            <div class="rl-range">Score 10 – 16 &nbsp;·&nbsp; Corrective action needed</div>
+          </div>
+        </div>
+
+        <div class="risk-level-row rl-extreme">
+          <div class="rl-dot"></div>
+          <div>
+            <div class="rl-name">Extreme</div>
+            <div class="rl-range">Score 17 – 25 &nbsp;·&nbsp; Immediate action required</div>
+          </div>
+        </div>
+
+        <div style="margin-top:8px; padding:14px 16px; background:#f5f6fa; border-radius:var(--radius-md); font-size:13px; color:var(--muted); line-height:1.65;">
+          Each score level includes plain-English guidance shown directly in the app to help the reporter choose the correct value.
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════ PDF REPORT ══════════ -->
+<section>
+  <div class="container">
+    <div class="section-label">📄 PDF Output</div>
+    <h2 class="section-title">Professional report, ready to share</h2>
+    <p class="section-sub">One tap generates a fully formatted, branded PDF. Share instantly via email, messaging, or any app on the device.</p>
+
+    <div class="pdf-features">
+
+      <div class="pdf-feature">
+        <span class="pf-icon">🆔</span>
+        <div>
+          <div class="pf-title">Auto Reference ID</div>
+          <p class="pf-desc">Each report gets a unique ID (e.g. <code>HSE-20260226-1430</code>) stamped in the header and footer of every page.</p>
+        </div>
+      </div>
+
+      <div class="pdf-feature">
+        <span class="pf-icon">🎨</span>
+        <div>
+          <div class="pf-title">Branded Header</div>
+          <p class="pf-desc">Red gradient header with the HSE shield icon, reporter info, and incident date in styled info pills.</p>
+        </div>
+      </div>
+
+      <div class="pdf-feature">
+        <span class="pf-icon">🏷️</span>
+        <div>
+          <div class="pf-title">Incident Type Banner</div>
+          <p class="pf-desc">A colour-coded card highlights the incident type with its icon, classification name, and exact location.</p>
+        </div>
+      </div>
+
+      <div class="pdf-feature">
+        <span class="pf-icon">🖼️</span>
+        <div>
+          <div class="pf-title">Photo Grid</div>
+          <p class="pf-desc">Attached photos are laid out in a 2-column grid with numbered badges. Pagination is handled automatically.</p>
+        </div>
+      </div>
+
+      <div class="pdf-feature">
+        <span class="pf-icon">📝</span>
+        <div>
+          <div class="pf-title">Details Grid</div>
+          <p class="pf-desc">Core fields (reporter, department, shift, date, time, location) laid out in clean two-column cards with icons.</p>
+        </div>
+      </div>
+
+      <div class="pdf-feature">
+        <span class="pf-icon">🔍</span>
+        <div>
+          <div class="pf-title">Root Cause Breakdown</div>
+          <p class="pf-desc">Root causes are grouped by category with colour-coded headers and bullet-point factor lists.</p>
+        </div>
+      </div>
+
+      <div class="pdf-feature">
+        <span class="pf-icon">📊</span>
+        <div>
+          <div class="pf-title">Risk Matrix Visual</div>
+          <p class="pf-desc">A miniature 5×5 risk matrix with the active cell highlighted, alongside the numeric score and level badge.</p>
+        </div>
+      </div>
+
+      <div class="pdf-feature">
+        <span class="pf-icon">⚡</span>
+        <div>
+          <div class="pf-title">Immediate Actions</div>
+          <p class="pf-desc">Corrective actions are rendered in a styled block with a colour accent matching the risk level.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════ APP FEATURES ══════════ -->
+<section style="background:#fff;">
+  <div class="container">
+    <div class="section-label">✨ App Features</div>
+    <h2 class="section-title">Built for real-world use</h2>
+    <p class="section-sub">Designed to work quickly under field conditions, with no account or internet connection required.</p>
+
+    <div class="features-list">
+
+      <div class="feature-item">
+        <div class="fi-icon" style="background:#fff3e0;">💾</div>
+        <div>
+          <div class="fi-title">Auto-Save</div>
+          <p class="fi-desc">Every change is saved automatically. Close the app and return exactly where you left off.</p>
+        </div>
+      </div>
+
+      <div class="feature-item">
+        <div class="fi-icon" style="background:#e8eef8;">🌙</div>
+        <div>
+          <div class="fi-title">Dark &amp; Light Mode</div>
+          <p class="fi-desc">Toggle between modes from any screen using the button in the top-right corner.</p>
+        </div>
+      </div>
+
+      <div class="feature-item">
+        <div class="fi-icon" style="background:#e8f5ee;">👆</div>
+        <div>
+          <div class="fi-title">Swipe Navigation</div>
+          <p class="fi-desc">Swipe from the screen edge to move between steps — no need to reach the navigation buttons.</p>
+        </div>
+      </div>
+
+      <div class="feature-item">
+        <div class="fi-icon" style="background:#fef8e8;">📷</div>
+        <div>
+          <div class="fi-title">Up to 10 Photos</div>
+          <p class="fi-desc">Attach photos from camera or photo library. Duplicate detection prevents attaching the same image twice.</p>
+        </div>
+      </div>
+
+      <div class="feature-item">
+        <div class="fi-icon" style="background:#f3edf8;">🔎</div>
+        <div>
+          <div class="fi-title">Root Cause Search</div>
+          <p class="fi-desc">Search across all 40+ root cause factors instantly. Sections auto-expand to show matching results.</p>
+        </div>
+      </div>
+
+      <div class="feature-item">
+        <div class="fi-icon" style="background:#fff3e0;">🆕</div>
+        <div>
+          <div class="fi-title">New Report Flow</div>
+          <p class="fi-desc">Tap "Start a new report" to clear all data and begin fresh. A confirmation dialog prevents accidental resets.</p>
+        </div>
+      </div>
+
+      <div class="feature-item">
+        <div class="fi-icon" style="background:#e8eef8;">📤</div>
+        <div>
+          <div class="fi-title">System Share Sheet</div>
+          <p class="fi-desc">The generated PDF is shared via the standard iOS share sheet — email, AirDrop, Files, Teams, and more.</p>
+        </div>
+      </div>
+
+      <div class="feature-item">
+        <div class="fi-icon" style="background:#e8f5ee;">🔒</div>
+        <div>
+          <div class="fi-title">Fully Offline</div>
+          <p class="fi-desc">No account, no server, no internet required. All data stays on device. PDF is generated locally.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════ DEPARTMENTS ══════════ -->
+<section>
+  <div class="container">
+    <div class="section-label">🏢 Departments &amp; Shifts</div>
+    <h2 class="section-title">Pre-configured for operations</h2>
+    <p class="section-sub">Department and shift fields use drop-down menus to keep data consistent across all reports.</p>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:40px;">
+
+      <div>
+        <div style="font-size:12px; font-weight:700; letter-spacing:1px; color:var(--muted); text-transform:uppercase; margin-bottom:14px;">Departments</div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <span style="background:var(--card); border:1px solid var(--border); border-radius:99px; padding:5px 14px; font-size:13px; font-weight:600; box-shadow:var(--shadow-sm);">Operation</span>
+            <span style="background:var(--card); border:1px solid var(--border); border-radius:99px; padding:5px 14px; font-size:13px; font-weight:600; box-shadow:var(--shadow-sm);">Maintenance</span>
+            <span style="background:var(--card); border:1px solid var(--border); border-radius:99px; padding:5px 14px; font-size:13px; font-weight:600; box-shadow:var(--shadow-sm);">Health &amp; Safety</span>
+            <span style="background:var(--card); border:1px solid var(--border); border-radius:99px; padding:5px 14px; font-size:13px; font-weight:600; box-shadow:var(--shadow-sm);">Logistics</span>
+            <span style="background:var(--card); border:1px solid var(--border); border-radius:99px; padding:5px 14px; font-size:13px; font-weight:600; box-shadow:var(--shadow-sm);">Engineering</span>
+            <span style="background:var(--card); border:1px solid var(--border); border-radius:99px; padding:5px 14px; font-size:13px; font-weight:600; box-shadow:var(--shadow-sm);">Environment</span>
+            <span style="background:var(--card); border:1px solid var(--border); border-radius:99px; padding:5px 14px; font-size:13px; font-weight:600; box-shadow:var(--shadow-sm);">Admin</span>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-size:12px; font-weight:700; letter-spacing:1px; color:var(--muted); text-transform:uppercase; margin-bottom:14px;">Shifts</div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <div style="background:var(--card); border:1px solid var(--border); border-radius:var(--radius-md); padding:14px 20px; text-align:center; box-shadow:var(--shadow-sm); min-width:100px;">
+            <div style="font-size:22px; margin-bottom:4px;">🌅</div>
+            <div style="font-size:13px; font-weight:700;">Morning</div>
+          </div>
+          <div style="background:var(--card); border:1px solid var(--border); border-radius:var(--radius-md); padding:14px 20px; text-align:center; box-shadow:var(--shadow-sm); min-width:100px;">
+            <div style="font-size:22px; margin-bottom:4px;">☀️</div>
+            <div style="font-size:13px; font-weight:700;">Afternoon</div>
+          </div>
+          <div style="background:var(--card); border:1px solid var(--border); border-radius:var(--radius-md); padding:14px 20px; text-align:center; box-shadow:var(--shadow-sm); min-width:100px;">
+            <div style="font-size:22px; margin-bottom:4px;">🌙</div>
+            <div style="font-size:13px; font-weight:700;">Night</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer>
+  <strong>HSE Incident Reporter</strong><br/>
+  Health, Safety &amp; Environment · iOS App<br/>
+  <span style="opacity:0.45; font-size:11px; margin-top:6px; display:block;">
+    All data is stored on-device. No account or internet connection required.
+  </span>
+</footer>
+
+</body>
+</html>
